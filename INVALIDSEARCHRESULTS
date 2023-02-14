@@ -1,0 +1,23 @@
+Assume you are given the table below containing the information on the searches attempted and the percentage of invalid searches by country. 
+Write a query to obtain the percentage of invalid searches.
+Output the country in ascending order, total searches and overall percentage of invalid searches rounded to 2 decimal places.
+Notes:
+num_search = Number of searches attempted; invalid_result_pct = Percentage of invalid searches.
+In cases where countries have search attempts but do not have a percentage of invalid searches in invalid_result_pct, it should be excluded, and vice versa.
+To find the percentages, multiply by 100.0 and not 100 to avoid integer division.
+search_category Table:
+Column Name	          Type
+country	              string
+search_cat	          string
+num_search	          integer
+invalid_result_pct  	decimal
+
+SQL SCRIPT
+
+with cte as (select * from search_category
+where invalid_result_pct is not null)
+select country,sum(num_search) as total_search,
+round(sum(num_search*invalid_result_pct)/Sum(num_search),2) as total_invalid_searches
+from cte 
+group by country
+order by country
