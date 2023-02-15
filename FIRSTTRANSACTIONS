@@ -1,0 +1,23 @@
+Assume you are given the table below on user transactions. Write a query to obtain the list of customers
+whose first transaction was valued at $50 or more. Output the number of users.
+Clarification:
+Use the transaction_date field to determine which transaction should be labeled as the first for each user.
+Use a specific function (we can't give too much away!) to account for scenarios 
+where a user had multiple transactions on the same day, and one of those was the first.
+user_transactions Table:
+Column Name	        Type
+transaction_id	    integer
+user_id	            integer
+spend	              decimal
+transaction_date	  timestamp
+
+SQL SCRIPT
+
+with cte as 
+(select user_id,spend,transaction_date,
+rank()over(partition by user_id 
+order by transaction_date) as rnk
+from user_transactions)
+select count(distinct user_id) as
+users from cte WHERE
+rnk=1 and spend>50
