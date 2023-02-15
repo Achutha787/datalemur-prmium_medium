@@ -1,0 +1,20 @@
+For every customer that bought Photoshop, return a list of the customers, 
+and the total spent on all the products except for Photoshop products.
+Sort your answer by customer ids in ascending order.
+adobe_transactions Table:
+Column Name	    Type
+customer_id	    integer
+product	        string
+revenue       	integer
+
+SQL SCRIPT
+
+with cte as 
+(select customer_id as users from adobe_transactions
+where product='Photoshop')
+select ad.customer_id,
+sum(case when product = 'Photoshop' then 0 else revenue end) 
+as total_revenue
+from adobe_transactions
+ad join cte on ad.customer_id=cte.users
+group by ad.customer_id
