@@ -1,0 +1,18 @@
+Each Facebook user can designate a personal email address, a business email address, and a recovery email address.
+Unfortunately, the table is currently in the wrong format, so you need to transform its structure to show 
+the following columns (see example output): user id, personal email, business email, and recovery email.
+Sort your answer by user id in ascending order.
+users Table:
+Column Name	      Type
+user_id	         integer
+email_type	      varchar
+email	           varchar
+
+SQL SCRIPT
+select user_id ,
+max(case when email_type='personal' then email else null end) as personal,
+max(case when email_type='business' then email else null end) as business,
+max(case when email_type='recovery' then email else null end) as recovery
+from users
+group by user_id
+order by user_id
